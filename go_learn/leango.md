@@ -294,3 +294,20 @@ func TypeOf(i interface) Type {...}:返回数据中的类型，若空则返回ni
 
 # 结构体标签
 
+## 标签定义
+
+    type resume struct{
+        Name string 'info:"name" doc:"我的名字"'
+        Sex string 'info:"sex"'
+    }
+
+## 获取
+
+使用反射获取标签
+
+## 使用
+
+josn文件的编解码
+
+orm映射关系
+
