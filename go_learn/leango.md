@@ -354,4 +354,145 @@ GOMAXPROCES：限定p的个数
         defer fmt.Println("A.defer")
     }()
 
-### 
+## channel
+
+### 定义
+
+    make(chan,type,\<capacity>)
+
+    channel<- value//传入
+
+    s,ok:=channel//读出
+
+#### 阻塞
+
+必须有发送和接收才能正常进行，否则会发生阻塞
+
+#### 有缓冲的通道
+
+在未满和未空时不阻塞
+
+### 关闭通道
+
+    close(c)
+
+#### 注意事项
+
+1. 确定结束后才关闭channel
+2. 关闭后无法再发送数据
+3. 关闭后可以接收
+4. nil channel 收发都会阻塞
+
+### range
+
+    for data:=range c{
+
+    }
+
+### select
+
+    select{
+        case <-chan1:
+        csse chan2<- 1:
+        default :
+    }
+
+
+# Go Modules
+
+1. 依赖管理
+2. 淘汰GOPATH
+3. 统一社区的依赖管理
+
+为了替代GOPATH
+
+## GOPATH缺陷
+
+无版本控制
+
+无法同步一致第三方版本号
+
+无法指定当前项目应用的第三方库版本号
+
+## 模式
+
+go mod init 生成go.mod文件
+go mod download 下载 go.mod ⽂件中指明的所有依赖
+go mod tidy 整理现有的依赖
+go mod graph 查看现有的依赖结构
+go mod edit 编辑 go.mod ⽂件
+go mod vendor 导出项⽬所有的依赖到vendor⽬录
+go mod verify 校验⼀个模块是否被篡改过
+go mod why 查看为什么需要依赖某模块
+
+### GO111MODULE
+
+是否开启go modules模式，建议go V1.11之后，都设置为on
+
+### GOPROXY
+
+项⽬的第三⽅依赖库的下载源地址
+
+direct ⽤于指示 Go 回源到模块版本的源地址去抓取（⽐如 GitHub 等）
+
+### GOSUMDB
+
+⽤来校验拉取的第三⽅库是否是完整的
+默认也是国外的⽹站，如果设置了GOPROXY，这个就不⽤设置了
+
+### GOPRIVATE 
+
+覆盖GONOPROXY,GONOSUMDB
+
+通过设置GOPRIVATE即可
+go env -w GOPRIVATE="git.example.com,github.com/aceld/zinx
+表示git.example.com 和 github.com/aceld/zinx是私有仓库，不会进⾏GOPROXY下载和校验
+
+go evn -w GOPRIVATE="*.example.com"
+表示所有模块路径为example.com的⼦域名，⽐如git.example.com 或者 hello.example.com 都不进⾏GOPROXY下载和校验
+
+### 使用
+
+### 初始化项⽬
+
+任意⽂件夹创建⼀个项⽬（不要求在$GOPATH/src） mkdir -p $HOME/aceld/modules_test
+创建go.mod⽂件，同时起当前项⽬的模块名称 go mod init github.com/aceld/module_test
+就会⽣成⼀个go mod⽂件
+
+    module github.com/aceld/moudles_test
+    go 1.14
+
+在该项⽬编写源代码
+如果源代码中依赖某个库(⽐如: github.com/aceld/zinx/znet)
+
+⼿动down 
+
+    go get github.com/aceld/zinx/znet
+
+⾃动down
+
+go mod ⽂件会添加⼀⾏新代码
+
+    module github.com/aceld/moudles_test
+    go 1.14
+    require github.com/aceld/zinx v0.0.0-20200315073925-f09df55dc746 // indirect
+
+含义是当前模块依赖 github.com\/aceld\/zinx 依赖的版本是 v0.0.0-20200315073925-f09df55dc746
+
+//indirect 表示间接依赖
+
+因为项⽬直接依赖的是znet包所以所间接依赖zinx包
+
+会⽣成⼀个go.sum⽂件
+
+    github.com/aceld/zinx v0.0.0-20200315073925-f09df55dc746 h1:TturbcEfboY81jsKVSQtGkqk8FN8ag0TmKYzaFHflmQ=
+    github.com/aceld/zinx v0.0.0-20200315073925-f09df55dc746/go.mod h1:bMiERrPdR8FzpBOo86nhWWmeHJ1cCaqVvWKCGcDVJ5M=
+    github.com/golang/protobuf v1.3.3/go.mod h1:vzj43D7+SQXF/4pzW/hwtAqwc6iTitCiVSaWz5lYuqw=
+
+go.sum⽂件的作⽤ 罗列当前项⽬直接或间接的依赖所有模块版本，保证今后项⽬依赖的版本不会被篡改
+
+h1:hash
+
+表示整体项⽬的zip⽂件打开之后的全部⽂件的校验和来⽣成的hash
+如果不存在，可能表示依赖的库可能⽤不上
+xxx/go.mod h1:hash go.mod⽂件做的hash
