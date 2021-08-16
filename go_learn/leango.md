@@ -455,8 +455,14 @@ go evn -w GOPRIVATE="*.example.com"
 
 ### 初始化项⽬
 
-任意⽂件夹创建⼀个项⽬（不要求在$GOPATH/src） mkdir -p $HOME/aceld/modules_test
-创建go.mod⽂件，同时起当前项⽬的模块名称 go mod init github.com/aceld/module_test
+任意⽂件夹创建⼀个项⽬（不要求在$GOPATH/src） 
+
+    mkdir -p $HOME/aceld/modules_test
+
+创建go.mod⽂件，同时起当前项⽬的模块名称 
+
+    go mod init github.com/aceld/module_test
+
 就会⽣成⼀个go mod⽂件
 
     module github.com/aceld/moudles_test
