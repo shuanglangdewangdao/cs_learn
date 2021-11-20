@@ -451,5 +451,3 @@ template.New("").Funcs(funcMap).Parse()
 ## 组合模板
 
 layout模板就是网页中固定的部分
-
-# 数据库编程

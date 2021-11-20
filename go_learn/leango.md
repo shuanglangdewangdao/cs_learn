@@ -126,7 +126,7 @@ return有两个动作，先进行值返回，再执行defer，最后执行RET退
 
     s1:=ss[0:2]
 
-s1首地址与ss相同
+    s1首地址与ss相同
 
     s1:=make([]int,3)
 
@@ -224,6 +224,7 @@ fun(oop1 Oop):是值传递
 
 #### interface
 interface 本质上是一个指向具体类型和方法的指针
+
     type AnimalIF interface {
         Sleep()
         GetColor()
@@ -288,8 +289,8 @@ value:
 
 reflect包有两个函数
 
-func ValueOf(i interface) Value {...}:返回数据中的值，若空则返回0
-func TypeOf(i interface) Type {...}:返回数据中的类型，若空则返回nil，本身是一个断言
+    func ValueOf(i interface) Value {...}:返回数据中的值，若空则返回0
+    func TypeOf(i interface) Type {...}:返回数据中的类型，若空则返回nil，本身是一个断言
 
 
 # 结构体标签
